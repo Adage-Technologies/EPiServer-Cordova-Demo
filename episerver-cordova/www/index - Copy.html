@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <!--
+        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    <title>Helloworld</title>
+
+    <!-- Helloworld references -->
+    <link href="css/index.css" rel="stylesheet" />
+</head>
+<body ng-app="HelloWorldApp" ng-controller="helloWorldController as ctrl">
+    <div class="app-header">
+        <h1>Helloworld!</h1>
+    </div>
+
+    <div ng-if="!ctrl.error">
+        <section>
+            <h3>What we do</h3>
+            <p>{{::ctrl.page.whatText}}</p>
+        </section>
+
+        <section>
+            <h3>Why we do it</h3>
+            <p>{{::ctrl.page.whyText}}</p>
+        </section>
+
+        <section>
+            <h3>Who we are</h3>
+            <p>{{::ctrl.page.whoText}}</p>
+        </section>
+
+        <section>
+            <h3>Contact us</h3>
+            <p>{{::ctrl.page.contactText}}</p>
+        </section>
+    </div>
+
+    <div ng-if="ctrl.error">
+        <section>
+            <h3>There was a problem loading content!</h3>
+            <p>{{::ctrl.page.error}}</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>Helloworld</p>
+        <p>Adage Technologies</p>
+        <p>EPiServer Ascend 2015 Las Vegas</p>
+    </footer>
+
+    <!-- JavaScript dependencies -->
+    <script src="scripts/lib/angular.js"></script>
+    <script src="scripts/lib/q.js"></script>
+    <script src="scripts/lib/lodash.js"></script>
+
+    <!-- Cordova reference, this is added to your app when it's built. -->
+    <script src="cordova.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+
+    <!-- Entry -->
+    <script src="scripts/index.js"></script>
+</body>
+</html>

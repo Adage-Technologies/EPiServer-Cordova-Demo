@@ -1,0 +1,27 @@
+﻿<ion-view view-title="About">
+    <ion-content>
+        <ion-refresher on-refresh="refresh(true)" spinner="android"></ion-refresher>
+
+        <div class="about">
+            <section>
+                <h3>What we do</h3>
+                <p>{{::page.whatText}}</p>
+            </section>
+
+            <section>
+                <h3>Why we do it</h3>
+                <p>{{::page.whyText}}</p>
+            </section>
+
+            <section>
+                <h3>Who we are</h3>
+                <p>{{::page.whoText}}</p>
+            </section>
+
+            <section>
+                <h3>Contact us</h3>
+                <p>{{::page.contactText}}</p>
+            </section>
+        </div>
+    </ion-content>
+</ion-view>
