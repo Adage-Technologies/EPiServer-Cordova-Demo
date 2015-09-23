@@ -1,26 +1,11 @@
-﻿<ion-view view-title="About">
+﻿<ion-view view-title="{{::cms.title}}">
     <ion-content>
         <ion-refresher on-refresh="refresh(true)" spinner="android"></ion-refresher>
 
         <div class="about">
-            <section>
-                <h3>What we do</h3>
-                <p>{{::page.whatText}}</p>
-            </section>
-
-            <section>
-                <h3>Why we do it</h3>
-                <p>{{::page.whyText}}</p>
-            </section>
-
-            <section>
-                <h3>Who we are</h3>
-                <p>{{::page.whoText}}</p>
-            </section>
-
-            <section>
-                <h3>Contact us</h3>
-                <p>{{::page.contactText}}</p>
+            <section ng-repeat="section in cms.body">
+                <h3>{{::section.title}}</h3>
+                <div ng-bind-html="section.content"></div>
             </section>
         </div>
     </ion-content>

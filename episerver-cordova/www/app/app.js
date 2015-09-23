@@ -13,7 +13,7 @@
             });
         })
         .constant('contentServicesConfig', {
-            CONTENT_API_URL: '',
+            CONTENT_API_URL: 'http://ascend-dev.adagetechnologies.com/api/mobilepagedata/',
             HOME_PAGE_ID: 'home'
         })
         .config(function ($stateProvider, $urlRouterProvider) {

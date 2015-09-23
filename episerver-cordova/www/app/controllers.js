@@ -1,7 +1,7 @@
 ﻿(function () {
     "use strict";
 
-    angular.module("myapp.controllers", [])
+    angular.module("myapp.controllers", ['ngSanitize'])
 
     .controller("appCtrl", ["$scope", function ($scope) {
     }])
@@ -47,15 +47,16 @@
      */
     aboutUsController.$inject = ['$scope', 'contentService', 'myappService'];
     function aboutUsController($scope, contentService, spinner) {
-        $scope.page = {};
+        $scope.cms = {};
 
         // Attempt to retrieve the home page's content
-        contentService.get()
+        contentService.get(164)
 
             // Merge page properties with the controller
             .then(function (content) {
                 $scope.$applyAsync(function () {
-                    _.assign($scope.page, content);
+                    _.assign($scope.cms, content);
+                    console.log($scope);
                 });
             })
 

@@ -32,46 +32,16 @@
          * Returns a promise that resolves content for the given pageId
          */
         function get(pageId) {
-            // When this is first called, the pageId is not known. Assume we are on the home page.
-            if (typeof pageId === 'undefined') {
-                return entryPoint()
-                    .then(function (response) { return response.homePageId })
-                    .then(content);
+            if (typeof pageId !== 'number') {
+                throw new Error('Expecting a valid page id');
             }
 
-            return content(pageId);
-        }
-
-        /**
-         * Returns a promise that resolves the page id of the home page (ie the application 'entry point')
-         */
-        function entryPoint() {
             var deferred = Q.defer();
 
-            // TODO : actually get the page id from the EPiServer backend
-            var pageId = config.HOME_PAGE_ID;
-            deferred.resolve({ homePageId: pageId });
-            return deferred.promise;
-        }
+            $http.get(config.CONTENT_API_URL + pageId.toString())
+                .then(function (response) { deferred.resolve(response.data)}),
+                      deferred.reject.bind(deferred);
 
-        /**
-         * Returns a promise that resolves content for the given pageId
-         */
-        function content(pageId) {
-            var deferred = Q.defer();
-
-            // TODO : actually request the content from the EPiServer backend
-            var page = {
-                content: {
-                    whatText: "This is going to be CMS content that can be specified within an EPiServer site.",
-                    whoText: "This is going to be CMS content that can be specified within an EPiServer site.",
-                    whyText: "This is going to be CMS content that can be specified within an EPiServer site.",
-                    contactText: "This is going to be CMS content that can be specified within an EPiServer site.",
-                },
-                pageId: pageId
-            };
-
-            deferred.resolve(page);
             return deferred.promise;
         }
     }
@@ -91,10 +61,8 @@
          * localStorage. If both fail, the returned promise will be rejected.
          */
         function get(pageId) {
-            return contentApi.get(pageId)
-                .catch(getFromLocalStorage)
-                .then(saveToLocalStorage)
-                .then(function (page) { return page.content });
+            // TODO: handle failure, possibly look up old content in localStorage.
+            return contentApi.get(pageId);
         }
 
         function getFromLocalStorage(pageId) {
