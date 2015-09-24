@@ -1,0 +1,12 @@
+﻿<ion-view view-title="{{::cms.title}}">
+    <ion-content>
+        <ion-refresher on-refresh="refresh(true)" spinner="android"></ion-refresher>
+
+        <div class="about">
+            <section ng-repeat="section in cms.body">
+                <h3>{{::section.title}}</h3>
+                <div ng-bind-html="section.content"></div>
+            </section>
+        </div>
+    </ion-content>
+</ion-view>
