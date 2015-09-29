@@ -57,37 +57,11 @@
         };
 
         /**
-         * Will first attempt to retrieve the content from EPiServer. If this fails, we will check
-         * localStorage. If both fail, the returned promise will be rejected.
+         * You might want to check local storage if the http request fails.
          */
         function get(pageId) {
             // TODO: handle failure, possibly look up old content in localStorage.
             return contentApi.get(pageId);
-        }
-
-        function getFromLocalStorage(pageId) {
-            if (typeof pageId === 'undefined') {
-                pageId = config.HOME_PAGE_ID;
-            }
-
-            var content = localStorage.getItem('content' + pageId.toString());
-
-            if (content) {
-                return content;
-            }
-
-            throw new Error('No content found in local storage');
-        }
-
-        function saveToLocalStorage(page) {
-            // Do not store 'undefined'
-            if (typeof page === 'undefined') {
-                throw new Error('Attempted to save undefined.');
-            }
-
-            localStorage.setItem('content' + page.pageId.toString(), page);
-
-            return page;
         }
     }
 })();
