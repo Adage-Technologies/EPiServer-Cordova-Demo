@@ -1,0 +1,18 @@
+﻿<ion-view view-title="Beacon Content">
+    <ion-content>
+        <ion-refresher on-refresh="refresh(true)" spinner="android"></ion-refresher>
+
+        <div class="beaconStart">
+            <ion-toggle ng-model="searchBeacons" ng-change="searchBeaconsChange()">Search Beacons</ion-toggle>
+            <section ng-repeat="beaconPoll in beaconsFound">
+                <div>{{beaconPoll.uuid}} : {{beaconPoll.minor}}</div>
+            </section>
+
+            <section ng-repeat="beaconFound in monitorInfo">
+                <div>{{beaconFound.beaconTime}} : count {{beaconFound.beaconsFound}}</div>
+            </section>
+
+
+        </div>
+    </ion-content>
+</ion-view>

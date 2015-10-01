@@ -33,6 +33,11 @@
                 url: "/about",
                 templateUrl: "app/templates/view-about.html",
                 controller: "aboutCtrl"
+            })
+            .state("app.beacon", {
+                url: "/beacon",
+                templateUrl: "app/templates/view-beacon.html",
+                controller: "beaconCtrl"
             });
             $urlRouterProvider.otherwise("/app/home");
         });
