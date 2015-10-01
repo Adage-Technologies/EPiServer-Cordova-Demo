@@ -104,4 +104,5 @@
   <platform name="wp8">
     <splash src="res/screens/wp8/SplashScreenImage.jpg" width="480" height="800" />
   </platform>
+  <!-- <vs:plugin name="com.unarin.cordova.beacon" version="3.3.0" src="https://github.com/petermetz/cordova-plugin-ibeacon.git" /> -->
 </widget>
