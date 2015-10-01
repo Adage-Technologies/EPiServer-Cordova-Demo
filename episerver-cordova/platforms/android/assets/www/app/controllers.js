@@ -46,29 +46,32 @@
     /**
      * Exposes our app's content for rendering.
      */
-    aboutUsController.$inject = ['$scope', 'contentService', 'myappService'];
-    function aboutUsController($scope, contentService, spinner) {
+    aboutUsController.$inject = ['$scope', 'contentService'];
+    function aboutUsController($scope, contentService) {
         $scope.cms = {};
+        refreshCmsContent($scope);
+        $scope.refresh = refreshCmsContent;
 
-        // Attempt to retrieve the home page's content
-        contentService.get(164)
+        function refreshCmsContent($scope) {
+            var ABOUT_PAGE_ID = 164;
 
-            // Merge page properties with the controller
-            .then(function (content) {
-                $scope.$applyAsync(function () {
-                    _.assign($scope.cms, content);
-                    console.log($scope);
+            contentService.get(ABOUT_PAGE_ID)
+                .then(function (content) {
+                    $scope.$applyAsync(function () {
+                        _.assign($scope.cms, content);
+                        console.log($scope);
+                    });
+                })
+                .fail(function (error) {
+                    $scope.$applyAsync(function () {
+                        console.log(error);
+                        $scope.error = error;
+                    });
                 });
-            })
-
-            // Handle an error (i.e. from being offline and not having cached content)
-            .fail(function (error) {
-                $scope.$applyAsync(function () {
-                    console.log(error);
-                    $scope.error = error;
-                });
-            });
+        }
     }
+
+
     beaconController.$inject = ['$scope', 'contentService', 'myappService'];
     function beaconController($scope, contentService, spinner) {
         $scope.beaconInfo = {};
