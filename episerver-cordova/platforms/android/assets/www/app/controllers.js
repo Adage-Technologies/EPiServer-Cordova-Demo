@@ -46,28 +46,104 @@
     /**
      * Exposes our app's content for rendering.
      */
-    aboutUsController.$inject = ['$scope', 'contentService', 'myappService'];
-    function aboutUsController($scope, contentService, spinner) {
+    aboutUsController.$inject = ['$scope', 'contentService'];
+    function aboutUsController($scope, contentService) {
         $scope.cms = {};
+        refreshCmsContent($scope);
+        $scope.refresh = refreshCmsContent;
 
-        // Attempt to retrieve the home page's content
-        contentService.get(164)
+        function refreshCmsContent($scope) {
+            var ABOUT_PAGE_ID = 164;
 
-            // Merge page properties with the controller
-            .then(function (content) {
-                $scope.$applyAsync(function () {
-                    _.assign($scope.cms, content);
-                    console.log($scope);
+            contentService.get(ABOUT_PAGE_ID)
+                .then(function (content) {
+                    $scope.$applyAsync(function () {
+                        _.assign($scope.cms, content);
+                        console.log($scope);
+                    });
+                })
+                .fail(function (error) {
+                    $scope.$applyAsync(function () {
+                        console.log(error);
+                        $scope.error = error;
+                    });
                 });
-            })
+        }
+    }
 
-            // Handle an error (i.e. from being offline and not having cached content)
-            .fail(function (error) {
-                $scope.$applyAsync(function () {
-                    console.log(error);
-                    $scope.error = error;
-                });
+
+    beaconController.$inject = ['$scope', 'contentService', 'myappService'];
+    function beaconController($scope, contentService, spinner) {
+        $scope.beaconInfo = {};
+        $scope.monitorInfo = [];
+
+        var isSearching = false;
+        $scope.searchBeaconsChange = function () {
+            isSearching = !isSearching;
+            if (isSearching) {
+                $scope.startMonitoring();
+            } else {
+                $scope.stopMonitoring();
+            }
+        };
+
+        $scope.startMonitoring = function () {
+            var delegate = new cordova.plugins.locationManager.Delegate();
+
+            delegate.didDetermineStateForRegion = function (pluginResult) {
+
+                cordova.plugins.locationManager.appendToDeviceLog('[DOM] didDetermineStateForRegion: '
+                    + JSON.stringify(pluginResult));
+            };
+
+            delegate.didStartMonitoringForRegion = function (pluginResult) {
+                console.log('didStartMonitoringForRegion:', pluginResult);
+            };
+
+            delegate.didRangeBeaconsInRegion = function (pluginResult) {
+                $scope.updateVisibleBeacons(pluginResult);
+            };
+
+            cordova.plugins.locationManager.setDelegate(delegate);
+            cordova.plugins.locationManager.requestWhenInUseAuthorization();
+            cordova.plugins.locationManager.startRangingBeaconsInRegion(window.beaconRegion)
+                .fail(console.error)
+                .done();
+
+            alert('monitoring started');
+        }
+
+        $scope.updateVisibleBeacons = function (recentBeaconData) {
+            var currentBeacons = recentBeaconData.beacons;
+
+            $scope.$applyAsync(function () {
+
+                if ($scope.monitorInfo.length > 10) {
+                    $scope.monitorInfo.splice(1, 1);
+                }
+
+                $scope.monitorInfo.push({ beaconTime: new Date(), beaconsFound: currentBeacons.length });
+
+                $scope.beaconsFound = currentBeacons;
             });
+        }
+
+        $scope.stopMonitoring = function () {
+
+            cordova.plugins.locationManager.stopRangingBeaconsInRegion(window.beaconRegion)
+                .fail(console.error)
+                .done();
+
+            alert('monitoring stopped');
+        }
+
+        var uuid = 'B9407F30-F5F8-466E-AFF9-25556B57FE6D';
+        var identifier = 'nearbyBeacons';
+        
+        if (typeof cordova != "undefined" && typeof cordova.plugins != "undefined" && typeof cordova.plugins.locationManager != "undefined" && !window.beaconRegion) {
+            window.beaconRegion = new cordova.plugins.locationManager.BeaconRegion(identifier, uuid);
+        }
+
     }
     beaconController.$inject = ['$scope', 'contentService', 'myappService'];
     function beaconController($scope, contentService, spinner) {

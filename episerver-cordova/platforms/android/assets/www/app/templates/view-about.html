@@ -1,7 +1,7 @@
 ﻿<ion-view view-title="{{::cms.title}}">
     <ion-content>
-        <ion-refresher on-refresh="refresh(true)" spinner="android"></ion-refresher>
+        <ion-refresher on-refresh="refresh(this)" spinner="android"></ion-refresher>
 
-        <div class="about" ng-bind-html="section.content"></div>
+        <div class="about" ng-bind-html="cms.content"></div>
     </ion-content>
 </ion-view>
