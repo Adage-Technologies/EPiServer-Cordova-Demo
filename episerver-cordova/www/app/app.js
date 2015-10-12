@@ -34,6 +34,11 @@
                 templateUrl: "app/templates/view-about.html",
                 controller: "aboutCtrl"
             })
+            .state("app.content", {
+                url: "/content/*id",
+                templateUrl: "app/templates/view-about.html",
+                controller: "aboutCtrl"
+            })
             .state("app.beacon", {
                 url: "/beacon",
                 templateUrl: "app/templates/view-beacon.html",

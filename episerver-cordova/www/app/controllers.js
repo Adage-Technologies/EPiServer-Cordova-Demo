@@ -46,16 +46,20 @@
     /**
      * Exposes our app's content for rendering.
      */
-    aboutUsController.$inject = ['$scope', 'contentService'];
-    function aboutUsController($scope, contentService) {
+    aboutUsController.$inject = ['$scope', '$stateParams', 'contentService'];
+    function aboutUsController($scope, $stateParams, contentService) {
         $scope.cms = {};
+        $scope.givenId = $stateParams.id;
         refreshCmsContent($scope);
         $scope.refresh = refreshCmsContent;
 
         function refreshCmsContent($scope) {
-            var ABOUT_PAGE_ID = 164;
+            var CURRENT_PAGE_ID = 164;
 
-            contentService.get(ABOUT_PAGE_ID)
+            if ($scope.givenId)
+                CURRENT_PAGE_ID = parseInt($scope.givenId, 10);
+
+            contentService.get(CURRENT_PAGE_ID)
                 .then(function (content) {
                     $scope.$applyAsync(function () {
                         _.assign($scope.cms, content);
