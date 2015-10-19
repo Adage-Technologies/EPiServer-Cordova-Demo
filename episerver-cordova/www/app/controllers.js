@@ -50,29 +50,34 @@
     function aboutUsController($scope, $stateParams, contentService) {
         $scope.cms = {};
         $scope.givenId = $stateParams.id;
-        refreshCmsContent($scope);
-        $scope.refresh = refreshCmsContent;
 
-        function refreshCmsContent($scope) {
-            var CURRENT_PAGE_ID = 164;
+        var CURRENT_PAGE_ID = 164;
 
-            if ($scope.givenId)
-                CURRENT_PAGE_ID = parseInt($scope.givenId, 10);
+        if ($scope.givenId)
+            CURRENT_PAGE_ID = parseInt($scope.givenId, 10);
 
-            contentService.get(CURRENT_PAGE_ID)
-                .then(function (content) {
-                    $scope.$applyAsync(function () {
-                        _.assign($scope.cms, content);
-                        console.log($scope);
-                    });
-                })
-                .fail(function (error) {
-                    $scope.$applyAsync(function () {
-                        console.log(error);
-                        $scope.error = error;
-                    });
-                });
+        function refreshThisContent() {
+            refreshCmsContent($scope, contentService, CURRENT_PAGE_ID)
         }
+
+        refreshThisContent();
+        $scope.refresh = refreshThisContent;
+    }
+
+    function refreshCmsContent($scope, contentService, current_page_id) {
+        contentService.get(current_page_id)
+            .then(function (content) {
+                $scope.$applyAsync(function () {
+                    _.assign($scope.cms, content);
+                    console.log($scope);
+                });
+            })
+            .fail(function (error) {
+                $scope.$applyAsync(function () {
+                    console.log(error);
+                    $scope.error = error;
+                });
+            });
     }
 
 
