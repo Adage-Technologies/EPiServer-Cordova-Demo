@@ -40,6 +40,7 @@
         });
     }])
     .controller('aboutCtrl', aboutUsController)
+    .controller('directionsCtrl', directionsController)
     .controller('beaconCtrl', beaconController);
 
 
@@ -62,6 +63,14 @@
 
         refreshThisContent();
         $scope.refresh = refreshThisContent;
+    }
+
+    /**
+     * Exposes our app's content for rendering.
+     */
+    directionsController.$inject = ['$scope', '$stateParams', 'contentService'];
+    function directionsController($scope, $stateParams, contentService) {
+        // TODO : Add in fields from the about Us Controller
     }
 
     function refreshCmsContent($scope, contentService, current_page_id) {
