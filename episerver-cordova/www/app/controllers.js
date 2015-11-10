@@ -70,7 +70,20 @@
      */
     directionsController.$inject = ['$scope', '$stateParams', 'contentService'];
     function directionsController($scope, $stateParams, contentService) {
-        // TODO : Add in fields from the about Us Controller
+        $scope.cms = {};
+        $scope.givenId = $stateParams.id;
+
+        var CURRENT_PAGE_ID = 175;
+
+        if ($scope.givenId)
+            CURRENT_PAGE_ID = parseInt($scope.givenId, 10);
+
+        function refreshThisContent() {
+            refreshCmsContent($scope, contentService, CURRENT_PAGE_ID)
+        }
+
+        refreshThisContent();
+        $scope.refresh = refreshThisContent;
     }
 
     function refreshCmsContent($scope, contentService, current_page_id) {
@@ -140,7 +153,21 @@
                     $scope.monitorInfo.splice(1, 1);
                 }
 
-                $scope.monitorInfo.push({ beaconTime: new Date(), beaconsFound: currentBeacons.length });
+                var beaconsFound = "";
+                for (var beaconIndex = 0; beaconIndex < currentBeacons.length; beaconIndex++) {
+                    if (currentBeacons[beaconIndex].major == "10490")
+                        beaconsFound += " Blue";
+                    else
+                        beaconsFound += " Purple";
+
+                    beaconsFound += " " + currentBeacons[beaconIndex].proximity;
+                }
+
+                if (beaconsFound == "")
+                    beaconsFound = "None";
+
+
+                $scope.monitorInfo.push({ beaconTime: new Date(), beaconsFound: beaconsFound  });
 
                 $scope.beaconsFound = currentBeacons;
             });

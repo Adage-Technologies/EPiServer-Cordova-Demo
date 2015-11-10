@@ -1,4 +1,4 @@
-﻿(function () {
+﻿ (function () {
     "use strict";
 
     angular.module("myapp", ["ionic", "myapp.controllers", "myapp.services"])
@@ -38,6 +38,11 @@
                 url: "/content/*id",
                 templateUrl: "app/templates/view-about.html",
                 controller: "aboutCtrl"
+            })
+            .state("app.directions", {
+                url: "/directions",
+                templateUrl: "app/templates/view-directions.html",
+                controller: "directionsCtrl"
             })
             .state("app.beacon", {
                 url: "/beacon",
